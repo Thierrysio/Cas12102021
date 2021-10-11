@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 
 namespace Cas12102021
 {
     class Constantes
     {
-        public const string DatabaseFilename = "Trombinoscope.db3";
+        public const string DatabaseFilename = "cas12102021.db3";
 
         public const SQLite.SQLiteOpenFlags Flags =
             SQLite.SQLiteOpenFlags.ReadWrite |
