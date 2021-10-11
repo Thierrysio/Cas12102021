@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Cas12102021.Modeles
 {
-    class Client
+    public class Client
     {
         #region Attributs
 

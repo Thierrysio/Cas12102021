@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Cas12102021.Modeles;
 using SQLite;
 using SQLiteNetExtensionsAsync.Extensions;
 
@@ -31,57 +32,75 @@ namespace Cas12102021.Services
         {
             if (!initialized)
             {
-                if (!Database.TableMappings.Any(m => m.MappedType.Name ==typeof(NomDeLaClasse).Name))
-                 {
+                if (!Database.TableMappings.Any(m => m.MappedType.Name == typeof(Client).Name))
+                {
 
-                    await Database.CreateTablesAsync(CreateFlags.None, typeof(NomDeLaClasse)).ConfigureAwait(false);
+                    await Database.CreateTablesAsync(CreateFlags.None, typeof(Client)).ConfigureAwait(false);
 
                 }
+                if (!Database.TableMappings.Any(m => m.MappedType.Name == typeof(Commande).Name))
+                {
 
+                    await Database.CreateTablesAsync(CreateFlags.None, typeof(Commande)).ConfigureAwait(false);
 
-                initialized = true;
+                }
+                if (!Database.TableMappings.Any(m => m.MappedType.Name == typeof(Commander).Name))
+                {
+
+                    await Database.CreateTablesAsync(CreateFlags.None, typeof(Commander)).ConfigureAwait(false);
+
+                }
+                if (!Database.TableMappings.Any(m => m.MappedType.Name == typeof(Produit).Name))
+                {
+
+                    await Database.CreateTablesAsync(CreateFlags.None, typeof(Produit)).ConfigureAwait(false);
+
+                }
             }
+            initialized = true;
         }
+    
 
-        public Task<int> SaveItemNomDeLaClasseAsync(NomDeLaClasse item)
-        {
-            if (item.ID != 0)
-            {
-                return Database.UpdateAsync(item);
-            }
-            else
-            {
-                return Database.InsertAsync(item);
-            }
-        }
 
-        public Task MiseAJourRelation(object item)
+    public Task<int> SaveItemClientAsync(Client item)
+    {
+        if (item.ID != 0)
         {
-            return Database.UpdateWithChildrenAsync(item);
+            return Database.UpdateAsync(item);
         }
-        public Task<int> DeleteItemsAsyncNomDeLaClasse()
+        else
         {
-            return Database.DeleteAllAsync<NomDeLaClasse>();
+            return Database.InsertAsync(item);
         }
-        public ObservableCollection<NomDeLaClasse> GetItemsNomDeLaClassesAsync()
-        {
-            ObservableCollection<NomDeLaClasse> resultat = new ObservableCollection<NomDeLaClasse>();
-            List<NomDeLaClasse> liste = Database.Table<NomDeLaClasse>().ToListAsync().Result;
-            foreach (NomDeLaClasse unObjet in liste)
-            {
-                resultat.Add(unObjet);
-            }
-            return resultat;
-        }
-        public Task<NomDeLaClasse> GetNomDeLaClasseAvecRelations(NomDeLaClasse item)
-        {
-            return Database.GetWithChildrenAsync<NomDeLaClasse>(item.ID);
-        }
-        public Task<NomDeLaClasse> GetItemAsync(int id)
-        {
-            return Database.Table<NomDeLaClasse>().Where(i => i.ID == id).FirstOrDefaultAsync();
-        }
-
-        #endregion
     }
+
+    public Task MiseAJourRelation(object item)
+    {
+        return Database.UpdateWithChildrenAsync(item);
+    }
+    public Task<int> DeleteItemsAsyncClient()
+    {
+        return Database.DeleteAllAsync<Client>();
+    }
+    public ObservableCollection<Client> GetItemsNomDeLaClassesAsync()
+    {
+        ObservableCollection<Client> resultat = new ObservableCollection<Client>();
+        List<Client> liste = Database.Table<Client>().ToListAsync().Result;
+        foreach (Client unObjet in liste)
+        {
+            resultat.Add(unObjet);
+        }
+        return resultat;
+    }
+    public Task<Client> GetNomDeLaClasseAvecRelations(Client item)
+    {
+        return Database.GetWithChildrenAsync<Client>(item.ID);
+    }
+    public Task<Client> GetItemAsync(int id)
+    {
+        return Database.Table<Client>().Where(i => i.ID == id).FirstOrDefaultAsync();
+    }
+
+    #endregion
 }
+
