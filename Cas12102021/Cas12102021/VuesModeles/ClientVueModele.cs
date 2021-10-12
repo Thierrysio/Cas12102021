@@ -34,9 +34,9 @@ namespace Cas12102021.VuesModeles
         {
             Client C1 = new Client {Nom = "Client 01",Prenom = "Prenom 01", Photo = "Photo 01"};
 
-            App.Database.SaveItemClientAsync(C1);
+            int i = App.Database.SaveItemClientAsync(C1).Result;
 
-            Client CS = App.Database.GetItemAsync(1).Result;
+            Client CS = App.Database.GetItemAsync(i).Result;
 
             ObservableCollection<Client> oc1 = App.Database.GetItemsClientAsync();
             // Creer objet commande
@@ -47,10 +47,14 @@ namespace Cas12102021.VuesModeles
             CS.LesCommandes.Add(CO1);
             //mettre à jour la relation client commande
             App.Database.MiseAJourRelation(CS);
-
-             CS= App.Database.GetClientAvecRelations(CS).Result;
-            
-
+            //Recuperer l'objet et ses relations
+            CS= App.Database.GetClientAvecRelations(CS).Result;
+            /////////////////
+            Commander CDR1 = new Commander { Quantite = 5 };
+            App.Database.SaveItemCommanderAsync(CDR1);
+            CO1.LesLignesCommandes.Add(CDR1);
+            App.Database.MiseAJourRelation(CO1);
+            CO1 = App.Database.GetCommandeAvecRelations(CO1).Result;
         }
         #endregion
     }

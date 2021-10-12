@@ -44,12 +44,12 @@ namespace Cas12102021.Services
                     await Database.CreateTablesAsync(CreateFlags.None, typeof(Commande)).ConfigureAwait(false);
 
                 }
-                /*if (!Database.TableMappings.Any(m => m.MappedType.Name == typeof(Commander).Name))
+               if (!Database.TableMappings.Any(m => m.MappedType.Name == typeof(Commander).Name))
                 {
 
                     await Database.CreateTablesAsync(CreateFlags.None, typeof(Commander)).ConfigureAwait(false);
 
-                }
+                } /*
                 if (!Database.TableMappings.Any(m => m.MappedType.Name == typeof(Produit).Name))
                 {
 
@@ -72,7 +72,6 @@ namespace Cas12102021.Services
                 return Database.InsertAsync(item);
             }
         }
-
         public Task<int> SaveItemCommandeAsync(Commande item)
         {
             if (item.ID != 0)
@@ -84,7 +83,17 @@ namespace Cas12102021.Services
                 return Database.InsertAsync(item);
             }
         }
-
+        public Task<int> SaveItemCommanderAsync(Commander item)
+        {
+            if (item.ID != 0)
+            {
+                return Database.UpdateAsync(item);
+            }
+            else
+            {
+                return Database.InsertAsync(item);
+            }
+        }
         public Task MiseAJourRelation(object item)
         {
             return Database.UpdateWithChildrenAsync(item);
@@ -92,7 +101,7 @@ namespace Cas12102021.Services
         public Task<int> DeleteItemsAsyncClient()
         {
             return Database.DeleteAllAsync<Client>();
-        }
+        }  
         public ObservableCollection<Client> GetItemsClientAsync()
         {
             ObservableCollection<Client> resultat = new ObservableCollection<Client>();
@@ -107,6 +116,11 @@ namespace Cas12102021.Services
         {
             return Database.GetWithChildrenAsync<Client>(item.ID);
         }
+        public Task<Commande> GetCommandeAvecRelations(Commande item)
+        {
+            return Database.GetWithChildrenAsync<Commande>(item.ID);
+        }
+
         public Task<Client> GetItemAsync(int id)
         {
             return Database.Table<Client>().Where(i => i.ID == id).FirstOrDefaultAsync();
