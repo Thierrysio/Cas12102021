@@ -1,4 +1,5 @@
 ﻿using Cas12102021.Services;
+using Cas12102021.Vues;
 using System;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
@@ -13,7 +14,7 @@ namespace Cas12102021
         {
             InitializeComponent();
 
-            MainPage = new MainPage();
+            MainPage = new ClientVue();
         }
 
         protected override void OnStart()

@@ -4,7 +4,7 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Text;
 
-namespace Cas12102021.VueModeles
+namespace Cas12102021.VuesModeles
 {
     public class BaseVueModele : INotifyPropertyChanged
     {

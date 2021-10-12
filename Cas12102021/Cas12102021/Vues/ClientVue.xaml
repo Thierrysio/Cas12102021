@@ -4,9 +4,7 @@
              x:Class="Cas12102021.Vues.ClientVue">
     <ContentPage.Content>
         <StackLayout>
-            <Label Text="Welcome to Xamarin.Forms!"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
+            <Button Text="Créer un client" HorizontalOptions="Center" VerticalOptions="Center" Command="{Binding CommandeCreerClient}"/>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

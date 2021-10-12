@@ -59,48 +59,48 @@ namespace Cas12102021.Services
             }
             initialized = true;
         }
-    
 
 
-    public Task<int> SaveItemClientAsync(Client item)
-    {
-        if (item.ID != 0)
+        public Task<int> SaveItemClientAsync(Client item)
         {
-            return Database.UpdateAsync(item);
+            if (item.ID != 0)
+            {
+                return Database.UpdateAsync(item);
+            }
+            else
+            {
+                return Database.InsertAsync(item);
+            }
         }
-        else
-        {
-            return Database.InsertAsync(item);
-        }
-    }
 
-    public Task MiseAJourRelation(object item)
-    {
-        return Database.UpdateWithChildrenAsync(item);
-    }
-    public Task<int> DeleteItemsAsyncClient()
-    {
-        return Database.DeleteAllAsync<Client>();
-    }
-    public ObservableCollection<Client> GetItemsNomDeLaClassesAsync()
-    {
-        ObservableCollection<Client> resultat = new ObservableCollection<Client>();
-        List<Client> liste = Database.Table<Client>().ToListAsync().Result;
-        foreach (Client unObjet in liste)
+        public Task MiseAJourRelation(object item)
         {
-            resultat.Add(unObjet);
+            return Database.UpdateWithChildrenAsync(item);
         }
-        return resultat;
-    }
-    public Task<Client> GetNomDeLaClasseAvecRelations(Client item)
-    {
-        return Database.GetWithChildrenAsync<Client>(item.ID);
-    }
-    public Task<Client> GetItemAsync(int id)
-    {
-        return Database.Table<Client>().Where(i => i.ID == id).FirstOrDefaultAsync();
-    }
+        public Task<int> DeleteItemsAsyncClient()
+        {
+            return Database.DeleteAllAsync<Client>();
+        }
+        public ObservableCollection<Client> GetItemsNomDeLaClassesAsync()
+        {
+            ObservableCollection<Client> resultat = new ObservableCollection<Client>();
+            List<Client> liste = Database.Table<Client>().ToListAsync().Result;
+            foreach (Client unObjet in liste)
+            {
+                resultat.Add(unObjet);
+            }
+            return resultat;
+        }
+        public Task<Client> GetNomDeLaClasseAvecRelations(Client item)
+        {
+            return Database.GetWithChildrenAsync<Client>(item.ID);
+        }
+        public Task<Client> GetItemAsync(int id)
+        {
+            return Database.Table<Client>().Where(i => i.ID == id).FirstOrDefaultAsync();
+        }
 
-    #endregion
+        #endregion
+    }
 }
 
