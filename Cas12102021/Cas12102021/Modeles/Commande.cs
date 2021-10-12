@@ -23,6 +23,7 @@ namespace Cas12102021.Modeles
 
         public Commande()
         {
+            
         }
 
 

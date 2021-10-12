@@ -73,6 +73,18 @@ namespace Cas12102021.Services
             }
         }
 
+        public Task<int> SaveItemCommandeAsync(Commande item)
+        {
+            if (item.ID != 0)
+            {
+                return Database.UpdateAsync(item);
+            }
+            else
+            {
+                return Database.InsertAsync(item);
+            }
+        }
+
         public Task MiseAJourRelation(object item)
         {
             return Database.UpdateWithChildrenAsync(item);
@@ -91,7 +103,7 @@ namespace Cas12102021.Services
             }
             return resultat;
         }
-        public Task<Client> GetNomDeLaClasseAvecRelations(Client item)
+        public Task<Client> GetClientAvecRelations(Client item)
         {
             return Database.GetWithChildrenAsync<Client>(item.ID);
         }

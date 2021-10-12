@@ -24,6 +24,7 @@ namespace Cas12102021.Modeles
 
         public Client()
         {
+            LesCommandes = new ObservableCollection<Commande>();
         }
 
         #endregion

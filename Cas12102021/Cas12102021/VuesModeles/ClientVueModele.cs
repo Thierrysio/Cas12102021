@@ -39,6 +39,17 @@ namespace Cas12102021.VuesModeles
             Client CS = App.Database.GetItemAsync(1).Result;
 
             ObservableCollection<Client> oc1 = App.Database.GetItemsClientAsync();
+            // Creer objet commande
+            Commande CO1 = new Commande { DateCommande = DateTime.Now };
+            //mapper dans BDD l'objet Commande
+            App.Database.SaveItemCommandeAsync(CO1);
+            //Ajouter la commande a la collection lescommandes du client
+            CS.LesCommandes.Add(CO1);
+            //mettre à jour la relation client commande
+            App.Database.MiseAJourRelation(CS);
+
+             CS= App.Database.GetClientAvecRelations(CS).Result;
+            
 
         }
         #endregion
