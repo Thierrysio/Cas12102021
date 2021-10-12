@@ -44,7 +44,7 @@ namespace Cas12102021.Services
                     await Database.CreateTablesAsync(CreateFlags.None, typeof(Commande)).ConfigureAwait(false);
 
                 }
-                if (!Database.TableMappings.Any(m => m.MappedType.Name == typeof(Commander).Name))
+                /*if (!Database.TableMappings.Any(m => m.MappedType.Name == typeof(Commander).Name))
                 {
 
                     await Database.CreateTablesAsync(CreateFlags.None, typeof(Commander)).ConfigureAwait(false);
@@ -55,7 +55,7 @@ namespace Cas12102021.Services
 
                     await Database.CreateTablesAsync(CreateFlags.None, typeof(Produit)).ConfigureAwait(false);
 
-                }
+                }*/
             }
             initialized = true;
         }
@@ -81,7 +81,7 @@ namespace Cas12102021.Services
         {
             return Database.DeleteAllAsync<Client>();
         }
-        public ObservableCollection<Client> GetItemsNomDeLaClassesAsync()
+        public ObservableCollection<Client> GetItemsClientAsync()
         {
             ObservableCollection<Client> resultat = new ObservableCollection<Client>();
             List<Client> liste = Database.Table<Client>().ToListAsync().Result;

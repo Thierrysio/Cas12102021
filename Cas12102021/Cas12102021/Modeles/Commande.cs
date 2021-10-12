@@ -32,8 +32,8 @@ namespace Cas12102021.Modeles
         [PrimaryKey, AutoIncrement]
         public int ID { get => _id; set => _id = value; }
         public DateTime DateCommande { get => _dateCommande; set => _dateCommande = value; }
-        [OneToMany(CascadeOperations = CascadeOperation.All)]
-        public ObservableCollection<Commander> LesLignesCommandes { get => _lesLignesCommandes; set => _lesLignesCommandes = value; }
+        //[OneToMany(CascadeOperations = CascadeOperation.All)]
+        //public ObservableCollection<Commander> LesLignesCommandes { get => _lesLignesCommandes; set => _lesLignesCommandes = value; }
         [ForeignKey(typeof(Client))]     // Specify the foreign key
         public int ClientId { get => _clientId; set => _clientId = value; }
 
