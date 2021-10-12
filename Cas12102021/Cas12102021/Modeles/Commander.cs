@@ -10,7 +10,7 @@ namespace Cas12102021.Modeles
 
         private int _id;
         private int _quantite;
-
+        private Produit _leProduit;
         #endregion
 
         #region Constructeurs

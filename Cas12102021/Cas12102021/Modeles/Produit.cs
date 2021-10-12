@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Text;
 
 namespace Cas12102021.Modeles
 {
-   pubic class Produit
+   public class Produit
     {
         #region Attributs
 
