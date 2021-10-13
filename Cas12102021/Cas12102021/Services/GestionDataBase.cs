@@ -32,10 +32,22 @@ namespace Cas12102021.Services
         {
             if (!initialized)
             {
+                if (!Database.TableMappings.Any(m => m.MappedType.Name == typeof(Produit).Name))
+                {
+
+                    await Database.CreateTablesAsync(CreateFlags.None, typeof(Produit)).ConfigureAwait(false);
+
+                }
                 if (!Database.TableMappings.Any(m => m.MappedType.Name == typeof(Client).Name))
                 {
 
                     await Database.CreateTablesAsync(CreateFlags.None, typeof(Client)).ConfigureAwait(false);
+
+                }
+                if (!Database.TableMappings.Any(m => m.MappedType.Name == typeof(Commander).Name))
+                {
+
+                    await Database.CreateTablesAsync(CreateFlags.None, typeof(Commander)).ConfigureAwait(false);
 
                 }
                 if (!Database.TableMappings.Any(m => m.MappedType.Name == typeof(Commande).Name))
@@ -44,18 +56,8 @@ namespace Cas12102021.Services
                     await Database.CreateTablesAsync(CreateFlags.None, typeof(Commande)).ConfigureAwait(false);
 
                 }
-               if (!Database.TableMappings.Any(m => m.MappedType.Name == typeof(Commander).Name))
-                {
-
-                    await Database.CreateTablesAsync(CreateFlags.None, typeof(Commander)).ConfigureAwait(false);
-
-                } /*
-                if (!Database.TableMappings.Any(m => m.MappedType.Name == typeof(Produit).Name))
-                {
-
-                    await Database.CreateTablesAsync(CreateFlags.None, typeof(Produit)).ConfigureAwait(false);
-
-                }*/
+               
+                
             }
             initialized = true;
         }
@@ -94,6 +96,17 @@ namespace Cas12102021.Services
                 return Database.InsertAsync(item);
             }
         }
+        public Task<int> SaveItemProduitAsync(Produit item)
+        {
+            if (item.ID != 0)
+            {
+                return Database.UpdateAsync(item);
+            }
+            else
+            {
+                return Database.InsertAsync(item);
+            }
+        }
         public Task MiseAJourRelation(object item)
         {
             return Database.UpdateWithChildrenAsync(item);
@@ -112,6 +125,17 @@ namespace Cas12102021.Services
             }
             return resultat;
         }
+        public ObservableCollection<Produit> GetItemsProduitAsync()
+        {
+            ObservableCollection<Produit> resultat = new ObservableCollection<Produit>();
+            List<Produit> liste = Database.Table<Produit>().ToListAsync().Result;
+            foreach (Produit unObjet in liste)
+            {
+                resultat.Add(unObjet);
+            }
+            return resultat;
+        }
+
         public Task<Client> GetClientAvecRelations(Client item)
         {
             return Database.GetWithChildrenAsync<Client>(item.ID);
@@ -120,7 +144,14 @@ namespace Cas12102021.Services
         {
             return Database.GetWithChildrenAsync<Commande>(item.ID);
         }
-
+        public Task<Commander> GetCommanderAvecRelations(Commander item)
+        {
+            return Database.GetWithChildrenAsync<Commander>(item.ID);
+        }
+        public Task<Produit> GetProduitAvecRelations(Produit item)
+        {
+            return Database.GetWithChildrenAsync<Produit>(item.ID);
+        }
         public Task<Client> GetItemAsync(int id)
         {
             return Database.Table<Client>().Where(i => i.ID == id).FirstOrDefaultAsync();
