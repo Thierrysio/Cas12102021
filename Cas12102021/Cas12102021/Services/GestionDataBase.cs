@@ -33,30 +33,13 @@ namespace Cas12102021.Services
         {
             if (!initialized)
             {
-                if (!Database.TableMappings.Any(m => m.MappedType.Name == typeof(Produit).Name))
+                if (!Database.TableMappings.Any(m => m.MappedType.Name == typeof(XXXXXXXXX).Name))
                 {
 
-                    await Database.CreateTablesAsync(CreateFlags.None, typeof(Produit)).ConfigureAwait(false);
+                    await Database.CreateTablesAsync(CreateFlags.None, typeof(XXXXXXXXX)).ConfigureAwait(false);
 
                 }
-                if (!Database.TableMappings.Any(m => m.MappedType.Name == typeof(Client).Name))
-                {
 
-                    await Database.CreateTablesAsync(CreateFlags.None, typeof(Client)).ConfigureAwait(false);
-
-                }
-                if (!Database.TableMappings.Any(m => m.MappedType.Name == typeof(Commander).Name))
-                {
-
-                    await Database.CreateTablesAsync(CreateFlags.None, typeof(Commander)).ConfigureAwait(false);
-
-                }
-                if (!Database.TableMappings.Any(m => m.MappedType.Name == typeof(Commande).Name))
-                {
-
-                    await Database.CreateTablesAsync(CreateFlags.None, typeof(Commande)).ConfigureAwait(false);
-
-                }
             }
             initialized = true;
         }
