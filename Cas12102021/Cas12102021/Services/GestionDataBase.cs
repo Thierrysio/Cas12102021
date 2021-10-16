@@ -2,9 +2,10 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
-using Cas12102021.Modeles;
+
 using SQLite;
 using SQLiteNetExtensionsAsync.Extensions;
 
@@ -32,16 +33,16 @@ namespace Cas12102021.Services
         {
             if (!initialized)
             {
+                if (!Database.TableMappings.Any(m => m.MappedType.Name == typeof(Produit).Name))
+                {
+
+                    await Database.CreateTablesAsync(CreateFlags.None, typeof(Produit)).ConfigureAwait(false);
+
+                }
                 if (!Database.TableMappings.Any(m => m.MappedType.Name == typeof(Client).Name))
                 {
 
                     await Database.CreateTablesAsync(CreateFlags.None, typeof(Client)).ConfigureAwait(false);
-
-                }
-                if (!Database.TableMappings.Any(m => m.MappedType.Name == typeof(Commande).Name))
-                {
-
-                    await Database.CreateTablesAsync(CreateFlags.None, typeof(Commande)).ConfigureAwait(false);
 
                 }
                 if (!Database.TableMappings.Any(m => m.MappedType.Name == typeof(Commander).Name))
@@ -50,57 +51,58 @@ namespace Cas12102021.Services
                     await Database.CreateTablesAsync(CreateFlags.None, typeof(Commander)).ConfigureAwait(false);
 
                 }
-                if (!Database.TableMappings.Any(m => m.MappedType.Name == typeof(Produit).Name))
+                if (!Database.TableMappings.Any(m => m.MappedType.Name == typeof(Commande).Name))
                 {
 
-                    await Database.CreateTablesAsync(CreateFlags.None, typeof(Produit)).ConfigureAwait(false);
+                    await Database.CreateTablesAsync(CreateFlags.None, typeof(Commande)).ConfigureAwait(false);
 
                 }
             }
             initialized = true;
         }
-    
-
-
-    public Task<int> SaveItemClientAsync(Client item)
-    {
-        if (item.ID != 0)
+        public Task<int> SaveItemAsync<T>(T item)
         {
-            return Database.UpdateAsync(item);
-        }
-        else
-        {
-            return Database.InsertAsync(item);
-        }
-    }
 
-    public Task MiseAJourRelation(object item)
-    {
-        return Database.UpdateWithChildrenAsync(item);
-    }
-    public Task<int> DeleteItemsAsyncClient()
-    {
-        return Database.DeleteAllAsync<Client>();
-    }
-    public ObservableCollection<Client> GetItemsNomDeLaClassesAsync()
-    {
-        ObservableCollection<Client> resultat = new ObservableCollection<Client>();
-        List<Client> liste = Database.Table<Client>().ToListAsync().Result;
-        foreach (Client unObjet in liste)
-        {
-            resultat.Add(unObjet);
+            PropertyInfo x = (item.GetType().GetProperty("ID"));
+            int nbi = Convert.ToInt32(x.GetValue(item));
+            if (nbi != 0)
+            {
+                return Database.UpdateAsync(item);
+            }
+            else
+            {
+                return Database.InsertAsync(item);
+            }
         }
-        return resultat;
+        public Task MiseAJourItemRelation(object item)
+        {
+            return Database.UpdateWithChildrenAsync(item);
+        }
+        public Task<int> DeleteItemsAsync<T>()
+        {
+            return Database.DeleteAllAsync<T>();
+        }
+        public ObservableCollection<T> GetItemsAsync<T>() where T : new()
+        {
+            ObservableCollection<T> resultat = new ObservableCollection<T>();
+            List<T> liste = Database.Table<T>().ToListAsync().Result;
+            foreach (T unObjet in liste)
+            {
+                resultat.Add(unObjet);
+            }
+            return resultat;
+        }
+        public Task<T> GetItemAvecRelations<T>(T item) where T : new()
+        {
+            PropertyInfo x = (item.GetType().GetProperty("ID"));
+            int nbi = Convert.ToInt32(x.GetValue(item));
+            return Database.GetWithChildrenAsync<T>(nbi);
+        }
+        public Task<T> GetItemAsync<T>(int id) where T : new()
+        {
+            return Database.FindAsync<T>(id); ;
+        }
+        #endregion
     }
-    public Task<Client> GetNomDeLaClasseAvecRelations(Client item)
-    {
-        return Database.GetWithChildrenAsync<Client>(item.ID);
-    }
-    public Task<Client> GetItemAsync(int id)
-    {
-        return Database.Table<Client>().Where(i => i.ID == id).FirstOrDefaultAsync();
-    }
-
-    #endregion
 }
 
